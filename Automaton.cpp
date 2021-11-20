@@ -226,7 +226,7 @@ void Automaton::determinize() {
   // I hope it works
 }
 
-void Automaton::makeFull() {
+void Automaton::makeComplete() {
   set<std::string> alph;
   for (size_t from = 0; from < v_; ++from) {
     for (auto& [to, cost] : next_[from]) {
@@ -249,7 +249,7 @@ void Automaton::makeFull() {
 
 void Automaton::minimize() {
   determinize();
-  makeFull();
+  makeComplete();
   deleteUnreachableVertices();
   sortEdges();
 
@@ -410,4 +410,9 @@ bool Automaton::dfsFind(size_t v, size_t l, const std::string& word, vector<vect
 bool Automaton::findWord(const std::string& word) const {
   vector<vector<bool>> visit(v_, vector<bool>(word.size()+1, false));
   return dfsFind(start_, 0, word, visit);
+}
+void Automaton::reverse() {
+  for (size_t i = 0; i < finish_.size(); ++i) {
+    finish_[i] = !finish_[i];
+  }
 }
